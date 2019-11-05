@@ -22,7 +22,7 @@ namespace c__zuo_ye.Dao
 
         }
 
-        public List<T> executeReader(string sql,string[] args)
+        public List<T> executeReader(string sql,object[] args)
         {
             conn.Open();
             sql = String.Format(sql, args);
