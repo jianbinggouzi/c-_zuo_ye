@@ -12,8 +12,8 @@ namespace c__zuo_ye.Dao
     {
         private static string connString = "";
         private SqlConnection conn = new SqlConnection(connString);
-
-        public int executeNonQuery(string sql,string[] args)
+        //返回改变的列数
+        public int executeNonQuery(string sql,object[] args)
         {
             conn.Open();
             sql = String.Format(sql, args);
@@ -21,7 +21,7 @@ namespace c__zuo_ye.Dao
             return command.ExecuteNonQuery();
 
         }
-
+        //返回所有查询结果
         public List<T> executeReader(string sql,object[] args)
         {
             conn.Open();
@@ -48,12 +48,14 @@ namespace c__zuo_ye.Dao
             }
             return list;
         }
-        public int executeScalar(string sql,string[] args)
+
+        //返回结果第一行第一列
+        public object executeScalar(string sql,object[] args)
         {
             conn.Open();
             sql = String.Format(sql, args);
             SqlCommand command = new SqlCommand(sql, conn);
-            return (int)command.ExecuteScalar();
+            return command.ExecuteScalar();
         }
     }
 }
