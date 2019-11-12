@@ -9,6 +9,10 @@ namespace c__zuo_ye.Dao
 {
     class UserDao : BaseDao<User>
     {
+        public UserDao()
+        {
+            this.tablename = "t_post";
+        }
 
     }
 }

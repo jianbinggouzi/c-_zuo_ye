@@ -9,7 +9,7 @@ namespace c__zuo_ye.Domain
     class Post
     {
         private string uuid;
-        private string username;
+        private string useruuid;
         private string time;
         private string text;
         private int read;
@@ -21,9 +21,9 @@ namespace c__zuo_ye.Domain
             return uuid;
         }
 
-        public string getUsername()
+        public string getUseruuid()
         {
-            return username;
+            return useruuid;
         }
 
         public string getTime()
@@ -56,9 +56,9 @@ namespace c__zuo_ye.Domain
             this.uuid = uuid;
         }
 
-        public void setUserame(string name)
+        public void setUseuuid(string useruuid)
         {
-            this.username = name;
+            this.useruuid = useruuid;
         }
 
         public void setTime(String time)
