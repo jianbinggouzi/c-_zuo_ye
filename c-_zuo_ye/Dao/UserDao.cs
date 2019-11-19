@@ -12,6 +12,7 @@ namespace c__zuo_ye.Dao
         public UserDao()
         {
             this.tablename = "t_user";
+            Console.WriteLine("userDao init finish");
         }
 
     }

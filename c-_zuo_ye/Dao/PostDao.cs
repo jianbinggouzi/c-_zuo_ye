@@ -12,6 +12,7 @@ namespace c__zuo_ye.Dao
         public PostDao()
         {
             this.tablename = "t_post";
+            Console.WriteLine("postDao init finish");
         }
     }
 }
