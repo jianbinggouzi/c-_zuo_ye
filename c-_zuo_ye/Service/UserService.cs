@@ -9,11 +9,10 @@ using System.Threading.Tasks;
 
 namespace c__zuo_ye.Service
 {
-    class UserService : BaseService<UserDao>
+    class UserService
     {
         private ThreadLocal<UserDao> _userDao = new ThreadLocal<UserDao>();
 
-        private string tablename = "t_user";
 
         //注册
         public bool signup(User user)
