@@ -29,7 +29,7 @@ namespace c__zuo_ye.Service
             User user = userDao.get(uuid);
             return user.getPassword().Equals(password) ? user : null;
         }
-        //return: 成功/失败
+        //return: 成功/失败 修改资料
         public bool changeInfo(string uuid,string key,string value)
         {
             UserDao userDao = _userDao.Value;
