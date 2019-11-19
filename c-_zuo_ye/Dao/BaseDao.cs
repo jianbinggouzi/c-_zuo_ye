@@ -14,8 +14,17 @@ namespace c__zuo_ye.Dao
         protected SqlConnection conn = new SqlConnection(connString);
         protected string tablename = "";
 
+        public int delete(String uuid)
+        {
+            conn.Open();
+            StringBuilder sqlBuilder = new StringBuilder();
+            sqlBuilder.Append("delete from ").Append(tablename).Append(" where uuid = ").Append(uuid);
+            SqlCommand command = new SqlCommand(sqlBuilder.ToString());
+            return command.ExecuteNonQuery();
+        }
+
         //添加实例 
-        public int add(String tablename,T instance)
+        public int add(T instance)
         {
             conn.Open();
             StringBuilder sqlBuilder = new StringBuilder();
@@ -49,7 +58,7 @@ namespace c__zuo_ye.Dao
         }
 
         //更新实例属性值
-        public int updateField(string uuid, string key, string value)
+        public int update(string uuid, string key, string value)
         {
             if (key.Equals("uuid"))
                 return 0;

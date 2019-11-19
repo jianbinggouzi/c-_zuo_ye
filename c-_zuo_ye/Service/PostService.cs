@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace c__zuo_ye.Service
 {
-    class PostService 
+    class PostService
     {
 
         private ThreadLocal<PostDao> _postDao = new ThreadLocal<PostDao>();
@@ -22,11 +22,25 @@ namespace c__zuo_ye.Service
             UserDao userDao = _userDao.Value;
             PostDao postDao = _postDao.Value;
 
-            userDao.updateField(post.getUseruuid(), "send", (userDao.get(post.getUseruuid()).getSend()+1).ToString());
+            userDao.update(post.getUseruuid(), "send", (userDao.get(post.getUseruuid()).getSend() + 1).ToString());
 
-            return postDao.add("t_post", post)>0?true:false;
+            return postDao.add(post) > 0 ? true : false;
 
 
+        }
+        //删除帖子
+        public bool deletePost(Post post)
+        {
+            UserDao userDao = _userDao.Value;
+            PostDao postDao = _postDao.Value;
+            userDao.update(post.getUseruuid(), "send", (userDao.get(post.getUseruuid()).getSend() - 1).ToString());
+            return postDao.delete(post.getUuid()) > 0 ? true : false;
+        }
+        //赞同帖子
+        public bool digestPost(Post post)
+        {
+            PostDao postDao = _postDao.Value;
+            return postDao.update(post.getUuid(), "digest", (postDao.get(post.getUuid()).getDigest()+1).ToString())>0?true:false;
         }
     }
 }
