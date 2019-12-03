@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+create table t_post(
+	uuid varchar(32),
+	useruuid varchar(32),
+	time varchar(20),
+	text varchar(1000),
+  lastid varchar(32),
+	readnum int(5),
+  digestnum int(5),
+	primary key(uuid)
+)ENGINE=InnoDB default charset=utf8;
+
+create table t_user(
+  name varchar(20) not null,
+	uuid varchar(32),
+	password varchar(32),
+	send int(5),
+  primary key(uuid)
+)ENGINE=InnoDB default charset=utf8;
