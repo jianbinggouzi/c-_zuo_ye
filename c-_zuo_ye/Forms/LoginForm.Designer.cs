@@ -1,4 +1,6 @@
-﻿namespace c__zuo_ye.Forms
+﻿using c__zuo_ye.Service;
+
+namespace c__zuo_ye.Forms
 {
     partial class LoginForm
     {
@@ -33,6 +35,7 @@
             this.account_comboBox = new System.Windows.Forms.ComboBox();
             this.password_textBox = new System.Windows.Forms.TextBox();
             this.login_button = new System.Windows.Forms.Button();
+            this.signup_button = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -75,7 +78,7 @@
             // 
             // login_button
             // 
-            this.login_button.Location = new System.Drawing.Point(449, 377);
+            this.login_button.Location = new System.Drawing.Point(310, 368);
             this.login_button.Name = "login_button";
             this.login_button.Size = new System.Drawing.Size(130, 34);
             this.login_button.TabIndex = 4;
@@ -83,11 +86,22 @@
             this.login_button.UseVisualStyleBackColor = true;
             this.login_button.Click += new System.EventHandler(this.login_button_Click);
             // 
+            // signup_button
+            // 
+            this.signup_button.Location = new System.Drawing.Point(513, 369);
+            this.signup_button.Name = "signup_button";
+            this.signup_button.Size = new System.Drawing.Size(130, 33);
+            this.signup_button.TabIndex = 5;
+            this.signup_button.Text = "注册";
+            this.signup_button.UseVisualStyleBackColor = true;
+            this.signup_button.Click += new System.EventHandler(this.signup_button_Click);
+            // 
             // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(998, 577);
+            this.Controls.Add(this.signup_button);
             this.Controls.Add(this.login_button);
             this.Controls.Add(this.password_textBox);
             this.Controls.Add(this.account_comboBox);
@@ -107,5 +121,7 @@
         private System.Windows.Forms.ComboBox account_comboBox;
         private System.Windows.Forms.TextBox password_textBox;
         private System.Windows.Forms.Button login_button;
+        private UserService userService;
+        private System.Windows.Forms.Button signup_button;
     }
 }

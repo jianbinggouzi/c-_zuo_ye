@@ -13,6 +13,14 @@ namespace c__zuo_ye.Domain
         private string password;
         private int send;
         
+       public User(string name,string password)
+        {
+            this.name = name;
+            this.password = password;
+            this.send = 0;
+            this.uuid = Guid.NewGuid().ToString();
+        }
+
         public string getName()
         {
             return name;

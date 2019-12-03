@@ -16,6 +16,7 @@ namespace c__zuo_ye.Forms
         public LoginForm()
         {
             InitializeComponent();
+            this.userService = new UserService();
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -25,9 +26,18 @@ namespace c__zuo_ye.Forms
 
         private void login_button_Click(object sender, EventArgs e)
         {
-            string uuid = this.account_comboBox.Text;
+            string account = this.account_comboBox.Text;
             string password = this.password_textBox.Text;
-            
+            User user = userService.login()
+
+        }
+
+        private void signup_button_Click(object sender, EventArgs e)
+        {
+            string account = this.account_comboBox.Text;
+            string password = this.password_textBox.Text;
+            if (userService.signup(account, password))
+                signup_button.Text = "注册成功，请登录";
         }
     }
 }

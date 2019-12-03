@@ -15,8 +15,9 @@ namespace c__zuo_ye.Service
 
 
         //注册
-        public bool signup(User user)
+        public bool signup(string account,String password)
         {
+            User user = new User(account, password);
             UserDao userDao = _userDao.Value;
             return userDao.add(user) > 0 ? true : false;
         }
