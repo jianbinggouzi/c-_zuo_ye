@@ -18,7 +18,7 @@ namespace c__zuo_ye.RuntimeContext
 
         public Context()
         {
-            Task<object> task = new Task<object>();
+            //Task<object> task = new Task<object>();
             
         }
     }

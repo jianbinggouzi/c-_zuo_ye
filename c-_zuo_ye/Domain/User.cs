@@ -18,7 +18,7 @@ namespace c__zuo_ye.Domain
             this.name = name;
             this.password = password;
             this.send = 0;
-            this.uuid = Guid.NewGuid().ToString();
+            this.uuid = Guid.NewGuid().ToString().Replace("-", String.Empty);
         }
 
         public string getName()

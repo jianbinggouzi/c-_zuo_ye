@@ -28,7 +28,7 @@ namespace c__zuo_ye.Forms
         {
             string account = this.account_comboBox.Text;
             string password = this.password_textBox.Text;
-            User user = userService.login()
+            
 
         }
 

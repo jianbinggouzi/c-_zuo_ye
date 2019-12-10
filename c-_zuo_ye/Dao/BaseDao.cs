@@ -5,13 +5,14 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-
+using MySql.Data.MySqlClient;
 namespace c__zuo_ye.Dao
 {
     class BaseDao<T>
     {
-        protected static string connString = "";
-        protected SqlConnection conn = new SqlConnection(connString);
+        protected static string connString = "datasource=jianbinggouzi.club;database=mini_forum;userid=root;password=lcy360013;pooling=true;charset=utf8;";
+        MySqlConnection conn = new MySqlConnection(connString);
+        //protected SqlConnection conn = new SqlConnection(connString);
         protected string tablename = "";
 
         public int delete(String uuid)
@@ -19,7 +20,7 @@ namespace c__zuo_ye.Dao
             conn.Open();
             StringBuilder sqlBuilder = new StringBuilder();
             sqlBuilder.Append("delete from ").Append(tablename).Append(" where uuid = ").Append(uuid);
-            SqlCommand command = new SqlCommand(sqlBuilder.ToString());
+            MySqlCommand command = new MySqlCommand(sqlBuilder.ToString(), conn);
             return command.ExecuteNonQuery();
         }
 
@@ -29,23 +30,30 @@ namespace c__zuo_ye.Dao
             conn.Open();
             StringBuilder sqlBuilder = new StringBuilder();
             sqlBuilder.Append("insert into ").Append(tablename).Append("(");
-            Type type = typeof(T);
-            PropertyInfo[] prop = type.GetProperties();
+            Type type = instance.GetType();
+            Console.WriteLine(type.ToString());
+            FieldInfo[] prop = type.GetFields((BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public));
+            Console.WriteLine("--------- " + prop.Length);
             for(int i = 0; i < prop.Length; i++)
             {
+                
                 sqlBuilder.Append(prop[i].Name.ToString());
+                
                 if (i != prop.Length - 1)
                     sqlBuilder.Append(",");
             }
             sqlBuilder.Append(") ").Append("values").Append("(");
             for(int i = 0; i < prop.Length; i++)
             {
+                sqlBuilder.Append("'");
                 sqlBuilder.Append(prop[i].GetValue(instance).ToString());
+                sqlBuilder.Append("'");
                 if (i != prop.Length - 1)
                     sqlBuilder.Append(",");
             }
             sqlBuilder.Append(")");
-            SqlCommand command = new SqlCommand(sqlBuilder.ToString());
+            Console.WriteLine(sqlBuilder.ToString());
+            MySqlCommand command = new MySqlCommand(sqlBuilder.ToString(),conn);
             return command.ExecuteNonQuery();
 
             
@@ -72,7 +80,7 @@ namespace c__zuo_ye.Dao
         {
             conn.Open();
             sql = String.Format(sql, args);
-            SqlCommand command = new SqlCommand(sql,conn);
+            MySqlCommand command = new MySqlCommand(sql,conn);
             return command.ExecuteNonQuery();
 
         }
@@ -81,8 +89,8 @@ namespace c__zuo_ye.Dao
         {
             conn.Open();
             sql = String.Format(sql, args);
-            SqlCommand command = new SqlCommand(sql, conn);
-            SqlDataReader reader = command.ExecuteReader();
+            MySqlCommand command = new MySqlCommand(sql, conn);
+            MySqlDataReader reader = command.ExecuteReader();
             List<string> names = new List<string>();
             for(int i = 0; i < reader.FieldCount; i++)
             {
@@ -109,7 +117,7 @@ namespace c__zuo_ye.Dao
         {
             conn.Open();
             sql = String.Format(sql, args);
-            SqlCommand command = new SqlCommand(sql, conn);
+            MySqlCommand command = new MySqlCommand(sql, conn);
             return command.ExecuteScalar();
         }
     }
