@@ -40,7 +40,6 @@ namespace c__zuo_ye.Dao
                 conn.Close();
             }
         }
-
         //添加实例 
         public int add(T instance)
         {
