@@ -12,8 +12,13 @@ namespace c__zuo_ye.Dao
     {
         protected static string connString = "datasource=jianbinggouzi.club;database=mini_forum;userid=root;password=lcy360013;pooling=true;charset=utf8;";
         MySqlConnection conn = new MySqlConnection(connString);
-        //protected SqlConnection conn = new SqlConnection(connString);
+       
         protected string tablename = "";
+
+        public BaseDao()
+        {
+            
+        }
 
         public int delete(String uuid)
         {
@@ -21,19 +26,31 @@ namespace c__zuo_ye.Dao
             StringBuilder sqlBuilder = new StringBuilder();
             sqlBuilder.Append("delete from ").Append(tablename).Append(" where uuid = ").Append(uuid);
             MySqlCommand command = new MySqlCommand(sqlBuilder.ToString(), conn);
-            return command.ExecuteNonQuery();
+            
+            try
+            {
+                return command.ExecuteNonQuery();
+            }catch(Exception e)
+            {
+                Console.WriteLine(e);
+                return -1;
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
 
         //添加实例 
         public int add(T instance)
         {
-            conn.Open();
+         
             StringBuilder sqlBuilder = new StringBuilder();
             sqlBuilder.Append("insert into ").Append(tablename).Append("(");
             Type type = instance.GetType();
             Console.WriteLine(type.ToString());
             FieldInfo[] prop = type.GetFields((BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public));
-            Console.WriteLine("--------- " + prop.Length);
+           
             for(int i = 0; i < prop.Length; i++)
             {
                 
@@ -53,10 +70,23 @@ namespace c__zuo_ye.Dao
             }
             sqlBuilder.Append(")");
             Console.WriteLine(sqlBuilder.ToString());
+            conn.Open();
             MySqlCommand command = new MySqlCommand(sqlBuilder.ToString(),conn);
-            return command.ExecuteNonQuery();
 
-            
+            try
+            {
+                return command.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return -1;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
         }
         //通过uuid获取实例
         public T get(string uuid)
@@ -70,7 +100,7 @@ namespace c__zuo_ye.Dao
         {
             if (key.Equals("uuid"))
                 return 0;
-            string sql = "update "+this.tablename+" set '{0}' = '{1}' where uuid = '{2}'";
+            string sql = "update "+this.tablename+" set {0} = '{1}' where uuid = '{2}'";
             object[] args = new object[] { key, value, uuid };
             return executeNonQuery(sql, args);
         }
@@ -81,11 +111,24 @@ namespace c__zuo_ye.Dao
             conn.Open();
             sql = String.Format(sql, args);
             MySqlCommand command = new MySqlCommand(sql,conn);
-            return command.ExecuteNonQuery();
+       
+            try
+            {
+                return command.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return -1;
+            }
+            finally
+            {
+                conn.Close();
+            }
 
         }
         //返回所有查询结果
-        public List<T> executeReader(string sql,object[] args)
+        public List<T> executeReader(String sql,object[] args)
         {
             conn.Open();
             sql = String.Format(sql, args);
@@ -104,11 +147,22 @@ namespace c__zuo_ye.Dao
                 object obj = Activator.CreateInstance(type);
                 for (int i = 0; i < reader.FieldCount; i++)
                 {
-                    MethodInfo method = type.GetMethod("set" + names[i]);
-                    method.Invoke(obj, new object[] { reader.GetString(i) });
+                    string str = (names[i].ToUpper())[0].ToString() + names[i].Substring(1);
+                    MethodInfo method = type.GetMethod("set" + str);
+                    ParameterInfo[] paramList = method.GetParameters();
+                    try
+                    {
+                        method.Invoke(obj, new object[] { reader.GetString(i)});
+                    }
+                    catch(ArgumentException e)
+                    {
+                        method.Invoke(obj, new object[] { reader.GetInt32(i)});
+                    }
+                    
                 }
                 list.Add((T)obj);
             }
+            conn.Close();
             return list;
         }
 
@@ -118,7 +172,23 @@ namespace c__zuo_ye.Dao
             conn.Open();
             sql = String.Format(sql, args);
             MySqlCommand command = new MySqlCommand(sql, conn);
-            return command.ExecuteScalar();
+            
+            Object res = command.ExecuteScalar();
+            conn.Close();
+            return res;
+            try
+            {
+                
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return -1;
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
     }
 }

@@ -13,6 +13,11 @@ namespace c__zuo_ye.Domain
         private string password;
         private int send;
         
+        public User()
+        {
+
+        }
+
        public User(string name,string password)
         {
             this.name = name;

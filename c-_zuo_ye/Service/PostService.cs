@@ -12,15 +12,32 @@ namespace c__zuo_ye.Service
     class PostService
     {
 
-        private ThreadLocal<PostDao> _postDao = new ThreadLocal<PostDao>();
+        private PostDao postDao = new PostDao();
 
-        private ThreadLocal<UserDao> _userDao = new ThreadLocal<UserDao>();
+        private UserDao userDao = new UserDao();
+
+        //分页查询
+        public List<Post> getPosts(int pageNo,int pageSize){
+            int index = (pageNo-1)*pageSize;
+            List<Post> list = null;
+            if (pageNo == -1)
+            {
+                list = postDao.executeReader("select * from t_post where lastid='' order by time desc", new object[] { });
+            }else
+                list = postDao.executeReader("select * from t_post where lastid='' order by time desc limit {0},{1}",new object[]{index,pageSize});
+            return list;
+        }
+
+        //获取评论
+        public List<Post> getComment(String uuid)
+        {
+            List<Post> list = postDao.executeReader("select * from t_post where lastid='{0}' order by time desc", new object[] { uuid });
+            return list;
+        }
 
         //发帖子
         public bool addPost(Post post)
         {
-            UserDao userDao = _userDao.Value;
-            PostDao postDao = _postDao.Value;
 
             userDao.update(post.getUseruuid(), "send", (userDao.get(post.getUseruuid()).getSend() + 1).ToString());
 
@@ -28,19 +45,19 @@ namespace c__zuo_ye.Service
 
 
         }
+
         //删除帖子
         public bool deletePost(Post post)
         {
-            UserDao userDao = _userDao.Value;
-            PostDao postDao = _postDao.Value;
+      
             userDao.update(post.getUseruuid(), "send", (userDao.get(post.getUseruuid()).getSend() - 1).ToString());
             return postDao.delete(post.getUuid()) > 0 ? true : false;
         }
         //赞同帖子
         public bool digestPost(Post post)
         {
-            PostDao postDao = _postDao.Value;
-            return postDao.update(post.getUuid(), "digest", (postDao.get(post.getUuid()).getDigest()+1).ToString())>0?true:false;
+           
+            return postDao.update(post.getUuid(), "digestnum", (postDao.get(post.getUuid()).getDigestnum()+1).ToString())>0?true:false;
         }
     }
 }

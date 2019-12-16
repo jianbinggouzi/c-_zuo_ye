@@ -1,4 +1,5 @@
-﻿using c__zuo_ye.Service;
+﻿using c__zuo_ye.Domain;
+using c__zuo_ye.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace c__zuo_ye.RuntimeContext
 
         public static PostService postService = new PostService();
 
-
+        public static User user = null;
 
         public Context()
         {

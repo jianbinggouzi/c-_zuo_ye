@@ -6,16 +6,32 @@ using System.Threading.Tasks;
 
 namespace c__zuo_ye.Domain
 {
-    class Post
+    public class Post
     {
         private string uuid;
         private string useruuid;
         private string time;
         private string text;
-        private int read;
-        private int digest;
+        private int readnum;
+        private int digestnum;
         private string lastid;
         
+        public Post()
+        {
+
+        }
+
+        public Post(String text,String useruuid,String lastid)
+        {
+            this.uuid = Guid.NewGuid().ToString().Replace("-", String.Empty);
+            this.useruuid = useruuid;
+            this.time = DateTime.Now.ToString("g");
+            this.text = text;
+            this.readnum = 0;
+            this.digestnum = 0;
+            this.lastid = lastid;
+        }
+
         public string getUuid()
         {
             return uuid;
@@ -36,14 +52,14 @@ namespace c__zuo_ye.Domain
             return text;
         }
 
-        public int getRead()
+        public int getReadnum()
         {
-            return read;
+            return readnum;
         }
 
-        public int getDigest()
+        public int getDigestnum()
         {
-            return digest;
+            return digestnum;
         }
 
         public string getLastid()
@@ -56,7 +72,7 @@ namespace c__zuo_ye.Domain
             this.uuid = uuid;
         }
 
-        public void setUseuuid(string useruuid)
+        public void setUseruuid(string useruuid)
         {
             this.useruuid = useruuid;
         }
@@ -71,14 +87,14 @@ namespace c__zuo_ye.Domain
             this.text = text;
         }
 
-        public void setRead(int read)
+        public void setReadnum(int read)
         {
-            this.read = read;
+            this.readnum = read;
         }
 
-        public void setDigest(int digest)
+        public void setDigestnum(int digest)
         {
-            this.digest = digest;
+            this.digestnum = digest;
         }
 
         public void setLastid(string lastid)

@@ -1,4 +1,5 @@
-﻿using c__zuo_ye.Service;
+﻿using c__zuo_ye.Domain;
+using c__zuo_ye.Service;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,7 +29,14 @@ namespace c__zuo_ye.Forms
         {
             string account = this.account_comboBox.Text;
             string password = this.password_textBox.Text;
-            
+            User user = null;
+            if ((user=userService.login(account, password))!=null)
+            {
+                MessageBox.Show("登录成功");
+                RuntimeContext.Context.user = user;
+                (new IndexForm()).ShowDialog();
+                this.Dispose();
+            }
 
         }
 
@@ -38,6 +46,11 @@ namespace c__zuo_ye.Forms
             string password = this.password_textBox.Text;
             if (userService.signup(account, password))
                 signup_button.Text = "注册成功，请登录";
+        }
+
+        private void Account_comboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

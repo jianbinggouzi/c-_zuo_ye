@@ -11,8 +11,19 @@ namespace c__zuo_ye.Service
 {
     class UserService
     {
-        private ThreadLocal<UserDao> _userDao = new ThreadLocal<UserDao>();
+        private UserDao userDao = new UserDao();
 
+        //修改用户名
+        public int changeUserName(String uuid, String name)
+        {
+            return userDao.update(uuid, "name", name);
+
+        }
+        //修改密码
+        public int changUserPassword(String uuid, String password)
+        {
+            return userDao.update(uuid, "password", password);
+        }
 
         //注册
         public bool signup(string account,String password)
@@ -23,20 +34,25 @@ namespace c__zuo_ye.Service
         }
 
         //return: User实例 null则登录失败 
-        public User login(string uuid,string password)
+        public User login(string username,string password)
         {
-            UserDao userDao = _userDao.Value;
-            User user = userDao.get(uuid);
+           
+            List<User> list = userDao.executeReader("select * from t_user where name='{0}' and password='{1}'",new object[]{ username,password});
+            User user = list[0];
             return user.getPassword().Equals(password) ? user : null;
         }
         //return: 成功/失败 修改资料
         public bool changeInfo(string uuid,string key,string value)
         {
-            UserDao userDao = _userDao.Value;
             
             return userDao.update(uuid,key,value) > 0 ? true : false;
         }
-
+        //根据uuid获取用户名
+        public String getUserNameByUuid(string uuid)
+        {
+            Object result = userDao.executeScalar("select name from t_user where uuid='{0}'", new object[] { uuid });
+            return (String)result;
+        }
 
     }
 }

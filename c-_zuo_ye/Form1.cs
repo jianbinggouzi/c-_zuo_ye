@@ -16,5 +16,10 @@ namespace c__zuo_ye
         {
             InitializeComponent();
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
