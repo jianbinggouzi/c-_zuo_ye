@@ -19,7 +19,7 @@ namespace c__zuo_ye.Dao
         {
             
         }
-
+        //删除实例
         public int delete(String uuid)
         {
             conn.Open();
