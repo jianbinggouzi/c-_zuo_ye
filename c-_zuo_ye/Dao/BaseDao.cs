@@ -175,19 +175,6 @@ namespace c__zuo_ye.Dao
             Object res = command.ExecuteScalar();
             conn.Close();
             return res;
-            try
-            {
-                
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return -1;
-            }
-            finally
-            {
-                conn.Close();
-            }
         }
     }
 }
